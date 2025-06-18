@@ -1,8 +1,11 @@
 package com.liamfer.BloggingPlatform.Service;
 
+import com.liamfer.BloggingPlatform.Exceptions.ResourceNotFoundException;
 import com.liamfer.BloggingPlatform.Models.PostModel;
 import com.liamfer.BloggingPlatform.Repository.PostRepository;
+import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,5 +17,16 @@ public class PostService {
 
     public PostModel createPost(PostModel newPost){
         return repository.save(newPost);
+    }
+
+    public PostModel updatePost(PostModel postBody){
+        PostModel post = repository.findById(postBody.getId()).orElseThrow(() -> new ResourceNotFoundException("Post não encontrado!"));
+
+        post.setTitle(postBody.getTitle());
+        post.setContent(postBody.getContent());
+        post.setCategory(postBody.getCategory());
+        post.setTags(postBody.getTags());
+
+        return repository.save(post);
     }
 }
