@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -17,6 +18,14 @@ public class PostService {
 
     public PostModel createPost(PostModel newPost){
         return repository.save(newPost);
+    }
+
+    public Iterable<PostModel> getAllPosts(){
+        return repository.findAll();
+    }
+
+    public PostModel getPostById(Long id){
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post não encontrado!"));
     }
 
     public PostModel updatePost(PostModel postBody){
@@ -29,4 +38,10 @@ public class PostService {
 
         return repository.save(post);
     }
+
+    public void deletePost(Long id){
+        repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post não encontrado!"));
+        repository.deleteById(id);
+    }
+
 }

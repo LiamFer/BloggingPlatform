@@ -17,6 +17,16 @@ public class PostController {
         this.service = service;
     }
 
+    @GetMapping()
+    public ResponseEntity<Iterable<PostModel>> getPosts(){
+        return ResponseEntity.status(HttpStatus.OK).body(service.getAllPosts());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PostModel> getPost(@PathVariable("id") Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(service.getPostById(id));
+    }
+
     @PostMapping()
     public ResponseEntity<PostModel> newPost(@Valid @RequestBody PostModel body){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createPost(body));
@@ -26,6 +36,12 @@ public class PostController {
     public ResponseEntity<PostModel> editPost(@PathVariable("id") Long id,@Valid @RequestBody PostModel body){
         body.setId(id);
         return ResponseEntity.status(HttpStatus.OK).body(service.updatePost(body));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable("id") Long id){
+        service.deletePost(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
