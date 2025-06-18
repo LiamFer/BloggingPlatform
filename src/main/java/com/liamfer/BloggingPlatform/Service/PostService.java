@@ -20,8 +20,8 @@ public class PostService {
         return repository.save(newPost);
     }
 
-    public Iterable<PostModel> getAllPosts(){
-        return repository.findAll();
+    public Iterable<PostModel> getAllPosts(String term){
+        return repository.findPostContaining(term);
     }
 
     public PostModel getPostById(Long id){

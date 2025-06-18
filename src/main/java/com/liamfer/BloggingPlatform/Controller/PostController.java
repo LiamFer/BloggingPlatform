@@ -18,12 +18,12 @@ public class PostController {
     }
 
     @GetMapping()
-    public ResponseEntity<Iterable<PostModel>> getPosts(){
-        return ResponseEntity.status(HttpStatus.OK).body(service.getAllPosts());
+    public ResponseEntity<Iterable<PostModel>> getPosts(@RequestParam(value = "term",defaultValue = "") String term){
+        return ResponseEntity.status(HttpStatus.OK).body(service.getAllPosts(term));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostModel> getPost(@PathVariable("id") Long id){
+    public ResponseEntity<PostModel> getPost(@PathVariable("id") Long id, @RequestParam("term") String term){
         return ResponseEntity.status(HttpStatus.OK).body(service.getPostById(id));
     }
 
@@ -43,5 +43,6 @@ public class PostController {
         service.deletePost(id);
         return ResponseEntity.noContent().build();
     }
+
 
 }
